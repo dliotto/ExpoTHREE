@@ -62,9 +62,8 @@ export default function App() {
 
   async function spawnObj() {
     const model = {
-      'teste.obj': require('./assets/teste/cottage_obj.obj'),
-      'teste.mtl' : require('./assets/teste/cottage_obj.mtl'),
-      'teste.png': require('./assets/teste/cottage_diffuse.png'),
+      'teste.obj': require('./assets/teste/teste4.obj'),
+      'teste.mtl' : require('./assets/teste/teste4.mtl'),
     };
 
     const teste = await ExpoTHREE.loadAsync(
@@ -107,14 +106,14 @@ export default function App() {
     /**
      * Pikachu (2D plane)
      */
-     spawn2dPokemon();
+     //spawn2dPokemon();
 
     /**
      * Umbreon Pokemon (3D model with texture fail)
      */
     //spawn3dPokemon();
 
-    //spawnObj();
+    spawnObj();
   }
 
   function onResize({ x, y, scale, width, height }) {
