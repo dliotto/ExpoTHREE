@@ -55,27 +55,56 @@ export default function App() {
 
     const pikachu = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), pikachuImage);
     pikachu.position.z = -0.4;
-
+      
     scene.add(pikachu);
   }
 
 
   async function spawnObj() {
     const model = {
-      'teste.obj': require('./assets/teste/teste4.obj'),
-      'teste.mtl' : require('./assets/teste/teste4.mtl'),
+      'umbreon.obj': require('./assets/teste/teste7.obj'),
+      'umbreon.mtl': require('./assets/teste/teste7.mtl'),
+      'umbreon.png': require('./assets/umbreon/Umbreon.png'),
     };
 
+   /* const texture = await ExpoTHREE.loadAsync(
+      'http://www.wanke.com.br/img/site/logo-nova.png'
+    );*/
+
     const teste = await ExpoTHREE.loadAsync(
-      [model['teste.obj'], model['teste.mtl']],
+      [model['umbreon.obj'], model['umbreon.mtl']],
       null,
-      name => model[name]
+      model
     );
 
-    ExpoTHREE.utils.scaleLongestSideToSize(teste, 0.1);
-    ExpoTHREE.utils.alignMesh(teste, { y: 1 });
-  
-    scene.add(teste);
+    console.log('-------');
+    console.log(teste.children[0].geometry);
+
+    const teste2 = await ExpoTHREE.loadObjAsync({
+      asset: model['umbreon.obj']
+    });
+
+    const texture = await ExpoTHREE.loadTextureAsync({ 
+      asset: model['umbreon.png']
+    });
+
+    
+    /*teste2.traverse(child => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });*/
+
+    const geometry = new THREE.Geometry().fromBufferGeometry(teste.children[0].geometry);
+    
+    const mesh = new THREE.Mesh(geometry, new THREE.MeshToonMaterial({ color: '#505050' }));
+
+    ExpoTHREE.utils.scaleLongestSideToSize(mesh, 0.1);
+    ExpoTHREE.utils.alignMesh(mesh, { y: 1 });
+
+
+    scene.add(mesh);
   }
 
   async function onContextCreate({ gl, scale: pixelRatio, width, height }) {
@@ -86,8 +115,10 @@ export default function App() {
       pixelRatio,
       width,
       height,
+      
     });
 
+    
     /**
      * Setup Scene, Camera and Ambient Light
      */
@@ -97,6 +128,9 @@ export default function App() {
     camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
     scene.add(new THREE.AmbientLight(0xffffff));
+
+    const shadowLight = new THREE.DirectionalLight();
+    scene.add(shadowLight);
 
     /**
      * Purple Cube
@@ -124,6 +158,7 @@ export default function App() {
     camera.updateProjectionMatrix();
     renderer.setPixelRatio(scale);
     renderer.setSize(width, height);
+    
   }
 
   function onRender() {
