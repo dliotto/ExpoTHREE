@@ -88,6 +88,28 @@ export default function App() {
       asset: model['umbreon.png']
     });
 
+
+    const teste = await ExpoTHREE.loadAsync(
+      [model['umbreon.obj'], model['umbreon.mtl']],
+      null,
+      model
+    );
+
+    /*
+    console.log('-------');
+    console.log(teste.children[0].geometry);
+
+    const teste2 = await ExpoTHREE.loadObjAsync({
+      asset: model['umbreon.obj']
+    });
+
+    const texture = await ExpoTHREE.loadTextureAsync({ 
+      asset: model['umbreon.png']
+    });
+
+    const geometry = new THREE.Geometry().fromBufferGeometry(teste2.children[0].geometry);
+
+    const mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ map: texture }));*/
     
     /*teste2.traverse(child => {
       if (child instanceof THREE.Mesh) {
@@ -102,6 +124,9 @@ export default function App() {
 
     ExpoTHREE.utils.scaleLongestSideToSize(mesh, 0.1);
     ExpoTHREE.utils.alignMesh(mesh, { y: 1 });
+
+
+    
 
 
     scene.add(mesh);
